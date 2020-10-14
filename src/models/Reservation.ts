@@ -1,4 +1,4 @@
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
 
 class Reservation {
   id: string;
@@ -20,7 +20,7 @@ class Reservation {
     car: string,
     reason: string,
   ) {
-    (this.id = uuid()), (this.client = client);
+    (this.id = v4()), (this.client = client);
     this.initial_date = initial_date;
     this.finish_date = finish_date;
     this.car = car;
