@@ -27,6 +27,14 @@ class ReservationsRepository {
     return findReservationByCar || null;
   }
 
+  public findReservationByClient(client: string): Reservation | null {
+    const findReservationByClient = this.reservations.find(
+      reservation => reservation.client === client,
+    );
+
+    return findReservationByClient || null;
+  }
+
   public create({
     client,
     initial_date,

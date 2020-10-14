@@ -23,12 +23,23 @@ class CreateReservationService {
     car,
     reason,
   }: Request): Reservation {
-    const findReservation = this.reservationsRepository.findReservationByCar(
+    const findReservationByCar = this.reservationsRepository.findReservationByCar(
       car,
     );
 
-    if (findReservation && findReservation.finish_date === null) {
-      throw Error('this car is already being used.');
+    if (findReservationByCar && findReservationByCar.finish_date === null) {
+      throw Error('This car is already being used.');
+    }
+
+    const findReservationByClient = this.reservationsRepository.findReservationByClient(
+      client,
+    );
+
+    if (
+      findReservationByClient &&
+      findReservationByClient.finish_date === null
+    ) {
+      throw Error('This customer is already using a car');
     }
 
     const reservation = this.reservationsRepository.create({
