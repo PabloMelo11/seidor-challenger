@@ -27,13 +27,13 @@ reservationsRouter.post('/', (request: Request, response: Response) => {
       .json({ error: 'this car is already being used.' });
   }
 
-  const reservation = reservationsRepository.create(
+  const reservation = reservationsRepository.create({
     client,
-    parsedInitialDate,
-    parsedFinishDate,
+    initial_date: parsedInitialDate,
+    finish_date: parsedFinishDate,
     car,
     reason,
-  );
+  });
 
   return response.json(reservation);
 });

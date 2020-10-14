@@ -1,5 +1,13 @@
 import Reservation from '../models/Reservation';
 
+interface CreateReservationDTO {
+  client: string;
+  initial_date: Date;
+  finish_date: Date | null;
+  car: string;
+  reason: string;
+}
+
 class ReservationsRepository {
   private reservations: Reservation[];
 
@@ -19,20 +27,20 @@ class ReservationsRepository {
     return findReservationByCar || null;
   }
 
-  public create(
-    client: string,
-    initial_date: Date,
-    finish_date: Date | null,
-    car: string,
-    reason: string,
-  ): Reservation {
-    const reservation = new Reservation(
+  public create({
+    client,
+    initial_date,
+    finish_date,
+    car,
+    reason,
+  }: CreateReservationDTO): Reservation {
+    const reservation = new Reservation({
       client,
       initial_date,
       finish_date,
       car,
       reason,
-    );
+    });
 
     this.reservations.push(reservation);
 
