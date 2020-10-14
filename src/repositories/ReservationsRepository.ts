@@ -7,6 +7,10 @@ class ReservationsRepository {
     this.reservations = [];
   }
 
+  public all(): Reservation[] {
+    return this.reservations;
+  }
+
   public findReservationByCar(car: string): Reservation | null {
     const findReservationByCar = this.reservations.find(
       reservation => reservation.car === car,

@@ -1,12 +1,17 @@
 import { Router, Request, Response } from 'express';
 import { parseISO } from 'date-fns';
 
-import Reservation from '../models/Reservation';
 import ReservationsRepository from '../repositories/ReservationsRepository';
 
 const reservationsRouter = Router();
 
 const reservationsRepository = new ReservationsRepository();
+
+reservationsRouter.get('/', (request: Request, response: Response) => {
+  const reservations = reservationsRepository.all();
+
+  return response.json(reservations);
+});
 
 reservationsRouter.post('/', (request: Request, response: Response) => {
   const { client, initial_date, finish_date, car, reason } = request.body;
