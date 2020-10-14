@@ -12,8 +12,8 @@ interface Request {
 class CreateReservationService {
   private reservationsRepository: ReservationsRepository;
 
-  constructor(reservationsRespository: ReservationsRepository) {
-    this.reservationsRepository = reservationsRespository;
+  constructor(reservationsRepository: ReservationsRepository) {
+    this.reservationsRepository = reservationsRepository;
   }
 
   public execute({
@@ -23,23 +23,28 @@ class CreateReservationService {
     car,
     reason,
   }: Request): Reservation {
-    const findReservationByCar = this.reservationsRepository.findReservationByCar(
+    const findReservationsByCar = this.reservationsRepository.findReservationByCar(
       car,
     );
 
-    if (findReservationByCar && findReservationByCar.finish_date === null) {
+    const busyCar = findReservationsByCar?.find(
+      reservation => reservation.finish_date === null,
+    );
+
+    if (busyCar) {
       throw Error('This car is already being used.');
     }
 
-    const findReservationByClient = this.reservationsRepository.findReservationByClient(
+    const findReservationsByClient = this.reservationsRepository.findReservationsByClient(
       client,
     );
 
-    if (
-      findReservationByClient &&
-      findReservationByClient.finish_date === null
-    ) {
-      throw Error('This customer is already using a car');
+    const busyClient = findReservationsByClient?.find(
+      reservation => reservation.finish_date === null,
+    );
+
+    if (busyClient) {
+      throw Error('This customer is already using a car.');
     }
 
     const reservation = this.reservationsRepository.create({

@@ -1,6 +1,7 @@
 import Reservation from '../models/Reservation';
 
 interface CreateReservationDTO {
+  id: string;
   client: string;
   initial_date: Date;
   finish_date: Date | null;
@@ -19,20 +20,28 @@ class ReservationsRepository {
     return this.reservations;
   }
 
-  public findReservationByCar(car: string): Reservation | null {
-    const findReservationByCar = this.reservations.find(
+  public findReservationById(id: string): Reservation | null {
+    const findReservation = this.reservations.find(
+      reservation => reservation.id === id,
+    );
+
+    return findReservation || null;
+  }
+
+  public findReservationByCar(car: string): Reservation[] | null {
+    const findReservationByCar = this.reservations.filter(
       reservation => reservation.car === car,
     );
 
     return findReservationByCar || null;
   }
 
-  public findReservationByClient(client: string): Reservation | null {
-    const findReservationByClient = this.reservations.find(
+  public findReservationsByClient(client: string): Reservation[] | null {
+    const findReservationsByClient = this.reservations.filter(
       reservation => reservation.client === client,
     );
 
-    return findReservationByClient || null;
+    return findReservationsByClient || null;
   }
 
   public create({
@@ -41,7 +50,7 @@ class ReservationsRepository {
     finish_date,
     car,
     reason,
-  }: CreateReservationDTO): Reservation {
+  }: Omit<CreateReservationDTO, 'id'>): Reservation {
     const reservation = new Reservation({
       client,
       initial_date,
@@ -53,6 +62,20 @@ class ReservationsRepository {
     this.reservations.push(reservation);
 
     return reservation;
+  }
+
+  public update(reservation: CreateReservationDTO) {
+    const findReservation = this.reservations.findIndex(
+      reservation => reservation.id === reservation.id,
+    );
+
+    const updatedReservation = {
+      ...reservation,
+    };
+
+    this.reservations[findReservation] = updatedReservation;
+
+    return updatedReservation;
   }
 }
 

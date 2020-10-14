@@ -2,7 +2,9 @@ import { Router, Request, Response } from 'express';
 import { parseISO } from 'date-fns';
 
 import ReservationsRepository from '../repositories/ReservationsRepository';
+
 import CreateReservationService from '../services/CreateReservationService';
+import UpdateReservationService from '../services/UpdateReservationService';
 
 const reservationsRouter = Router();
 
@@ -38,5 +40,30 @@ reservationsRouter.post('/', (request: Request, response: Response) => {
     return response.status(400).json({ error: err.message });
   }
 });
+
+reservationsRouter.patch(
+  '/:reservationId',
+  (request: Request, response: Response) => {
+    try {
+      const { reservationId } = request.params;
+      const { finish_date } = request.body;
+
+      const updateReservation = new UpdateReservationService(
+        reservationsRepository,
+      );
+
+      const parsedFinishDate = parseISO(finish_date);
+
+      const reservation = updateReservation.execute({
+        reservationId,
+        finish_date: parsedFinishDate,
+      });
+
+      return response.json(reservation);
+    } catch (err) {
+      return response.status(400).json({ error: err.message });
+    }
+  },
+);
 
 export default reservationsRouter;
