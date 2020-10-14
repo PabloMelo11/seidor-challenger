@@ -1,19 +1,11 @@
 import { Router, Request, Response } from 'express';
-import { uuid } from 'uuidv4';
 import { parseISO } from 'date-fns';
+
+import Reservation from '../models/Reservation';
 
 const reservationsRouter = Router();
 
-interface IReservation {
-  id: string;
-  client: string;
-  initial_date: Date;
-  finish_date?: Date | null;
-  car: string;
-  reason: string;
-}
-
-const reservations: IReservation[] = [];
+const reservations: Reservation[] = [];
 
 reservationsRouter.post('/', (request: Request, response: Response) => {
   const { client, initial_date, finish_date, car, reason } = request.body;
@@ -29,14 +21,13 @@ reservationsRouter.post('/', (request: Request, response: Response) => {
       .json({ error: 'this car is already being used.' });
   }
 
-  const reservation = {
-    id: uuid(),
+  const reservation = new Reservation(
     client,
-    initial_date: parsedInitialDate,
-    finish_date: parsedFinishDate,
+    parsedInitialDate,
+    parsedFinishDate,
     car,
     reason,
-  };
+  );
 
   reservations.push(reservation);
 
