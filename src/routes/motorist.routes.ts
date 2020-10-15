@@ -4,6 +4,7 @@ import CreateMotoristService from '../services/CreateMotoristService';
 import UpdateMotoristService from '../services/UpdateMotoristService';
 import DeleteMotoristService from '../services/DeleteMotoristService';
 import FindOneMotoristService from '../services/FindOneMotoristService';
+import FindMotoristsService from '../services/FindMotoristsService';
 
 import MotoristRepository from '../repositories/MotoristsRepository';
 
@@ -12,9 +13,17 @@ const motoristRouter = Router();
 const motoristRepository = new MotoristRepository();
 
 motoristRouter.get('/', (request: Request, response: Response) => {
-  const motorists = motoristRepository.all();
+  try {
+    const name: string = request.query.name as string;
 
-  return response.json(motorists);
+    const findMotorists = new FindMotoristsService(motoristRepository);
+
+    const motorists = findMotorists.execute({ name });
+
+    return response.json(motorists);
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
+  }
 });
 
 motoristRouter.get('/:id', (request: Request, response: Response) => {

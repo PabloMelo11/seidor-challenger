@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 
 import CreateCarService from '../services/CreateCarService';
-import FindCarService from '../services/FindCarsService';
+import FindCarsService from '../services/FindCarsService';
 import FindOneCarService from '../services/FindOneCardService';
 import UpdateCarService from '../services/UpdateCarService';
 import DeleteCarService from '../services/DeleteCarService';
@@ -17,7 +17,7 @@ carsRouter.get('/', (request: Request, response: Response) => {
     const color: string = request.query.color as string;
     const brand: string = request.query.brand as string;
 
-    const findCars = new FindCarService(carsRepository);
+    const findCars = new FindCarsService(carsRepository);
 
     const cars = findCars.execute({ color, brand });
 

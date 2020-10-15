@@ -22,6 +22,16 @@ class MotoristRepository {
     return motorist || null;
   }
 
+  public findMotoristsByName(name: string): Motorist[] | null {
+    const motorist = this.motorists.filter(
+      motorist =>
+        motorist.name.toLocaleLowerCase().search(name.toLocaleLowerCase()) !==
+        -1,
+    );
+
+    return motorist || null;
+  }
+
   public findByName(name: string): Motorist | null {
     const motorist = this.motorists.find(motorist => motorist.name === name);
 
