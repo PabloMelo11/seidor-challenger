@@ -69,6 +69,14 @@ class CarsRepository {
 
     return updateCar;
   }
+
+  public delete(id: string) {
+    const carIndex = this.cars.findIndex(car => car.id === id);
+
+    this.cars.splice(carIndex, 1);
+
+    return;
+  }
 }
 
 export default CarsRepository;

@@ -4,6 +4,7 @@ import CreateCarService from '../services/CreateCarService';
 import FindCarService from '../services/FindCarsService';
 import FindOneCarService from '../services/FindOneCardService';
 import UpdateCarService from '../services/UpdateCarService';
+import DeleteCarService from '../services/DeleteCarService';
 
 import CarsRepository from '../repositories/CarsRepository';
 
@@ -68,4 +69,19 @@ carsRouter.put('/:id', (request: Request, response: Response) => {
     return response.status(400).json({ error: err.message });
   }
 });
+
+carsRouter.delete('/:id', (request: Request, response: Response) => {
+  try {
+    const { id } = request.params;
+
+    const deleteCar = new DeleteCarService(carsRepository);
+
+    deleteCar.execute({ id });
+
+    return response.status(200).send();
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
+  }
+});
+
 export default carsRouter;
