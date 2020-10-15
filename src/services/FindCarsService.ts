@@ -1,5 +1,7 @@
+import { getCustomRepository } from 'typeorm';
+
 import Car from '../models/Car';
-import CarRepository from '../repositories/CarsRepository';
+import CarsRepository from '../repositories/CarsRepository';
 
 interface Request {
   color: string;
@@ -7,18 +9,14 @@ interface Request {
 }
 
 class FindCarService {
-  private carRepository: CarRepository;
+  public async execute({ color, brand }: Request): Promise<Car[] | null> {
+    const carsRepository = getCustomRepository(CarsRepository);
 
-  constructor(carRepository: CarRepository) {
-    this.carRepository = carRepository;
-  }
-
-  public execute({ color, brand }: Request): Car[] | null {
     if (!color && !brand) {
-      return this.carRepository.all();
+      return await carsRepository.find();
     }
 
-    const cars = this.carRepository.findCarsByColorAndBrand({ color, brand });
+    const cars = carsRepository.findCarsByColorAndBrand({ color, brand });
 
     return cars || null;
   }

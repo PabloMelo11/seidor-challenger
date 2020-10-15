@@ -2,24 +2,20 @@ import { Router, Request, Response } from 'express';
 
 import CreateCarService from '../services/CreateCarService';
 import FindCarsService from '../services/FindCarsService';
-import FindOneCarService from '../services/FindOneCardService';
+import FindOneCarService from '../services/FindOneCarService';
 import UpdateCarService from '../services/UpdateCarService';
 import DeleteCarService from '../services/DeleteCarService';
 
-import CarsRepository from '../repositories/CarsRepository';
-
 const carsRouter = Router();
 
-const carsRepository = new CarsRepository();
-
-carsRouter.get('/', (request: Request, response: Response) => {
+carsRouter.get('/', async (request: Request, response: Response) => {
   try {
     const color: string = request.query.color as string;
     const brand: string = request.query.brand as string;
 
-    const findCars = new FindCarsService(carsRepository);
+    const findCars = new FindCarsService();
 
-    const cars = findCars.execute({ color, brand });
+    const cars = await findCars.execute({ color, brand });
 
     return response.json(cars);
   } catch (err) {
@@ -27,13 +23,13 @@ carsRouter.get('/', (request: Request, response: Response) => {
   }
 });
 
-carsRouter.get('/:id', (request: Request, response: Response) => {
+carsRouter.get('/:id', async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
 
-    const findCar = new FindOneCarService(carsRepository);
+    const findCar = new FindOneCarService();
 
-    const car = findCar.execute({ id });
+    const car = await findCar.execute({ id });
 
     return response.json(car);
   } catch (err) {
@@ -41,13 +37,13 @@ carsRouter.get('/:id', (request: Request, response: Response) => {
   }
 });
 
-carsRouter.post('/', (request: Request, response: Response) => {
+carsRouter.post('/', async (request: Request, response: Response) => {
   try {
     const { color, board, brand } = request.body;
 
-    const createCar = new CreateCarService(carsRepository);
+    const createCar = new CreateCarService();
 
-    const car = createCar.execute({ color, board, brand });
+    const car = await createCar.execute({ color, board, brand });
 
     return response.json(car);
   } catch (err) {
@@ -55,14 +51,14 @@ carsRouter.post('/', (request: Request, response: Response) => {
   }
 });
 
-carsRouter.put('/:id', (request: Request, response: Response) => {
+carsRouter.put('/:id', async (request: Request, response: Response) => {
   try {
     const { color, board, brand } = request.body;
     const { id } = request.params;
 
-    const updateCar = new UpdateCarService(carsRepository);
+    const updateCar = new UpdateCarService();
 
-    const car = updateCar.execute({ id, color, board, brand });
+    const car = await updateCar.execute({ id, color, board, brand });
 
     return response.json(car);
   } catch (err) {
@@ -70,13 +66,13 @@ carsRouter.put('/:id', (request: Request, response: Response) => {
   }
 });
 
-carsRouter.delete('/:id', (request: Request, response: Response) => {
+carsRouter.delete('/:id', async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
 
-    const deleteCar = new DeleteCarService(carsRepository);
+    const deleteCar = new DeleteCarService();
 
-    deleteCar.execute({ id });
+    await deleteCar.execute({ id });
 
     return response.status(200).send();
   } catch (err) {

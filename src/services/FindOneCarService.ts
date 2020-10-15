@@ -1,25 +1,24 @@
 import { getCustomRepository } from 'typeorm';
 
+import Car from '../models/Car';
 import CarsRepository from '../repositories/CarsRepository';
 
 interface Request {
   id: string;
 }
 
-class DeleteCarService {
-  public async execute({ id }: Request) {
+class FindOneCarService {
+  public async execute({ id }: Request): Promise<Car | null> {
     const carsRepository = getCustomRepository(CarsRepository);
 
-    const findCar = await carsRepository.findById(id);
+    const car = await carsRepository.findById(id);
 
-    if (!findCar) {
+    if (!car) {
       throw Error('Car not found.');
     }
 
-    await carsRepository.delete(id);
-
-    return;
+    return car || null;
   }
 }
 
-export default DeleteCarService;
+export default FindOneCarService;

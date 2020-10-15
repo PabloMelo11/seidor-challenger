@@ -1,5 +1,7 @@
+import { getCustomRepository } from 'typeorm';
+
 import Car from '../models/Car';
-import CarRepository from '../repositories/CarsRepository';
+import CarsRepository from '../repositories/CarsRepository';
 
 interface Request {
   id: string;
@@ -9,20 +11,16 @@ interface Request {
 }
 
 class UpdateCarService {
-  private carRepository: CarRepository;
+  public async execute({ id, color, board, brand }: Request): Promise<Car> {
+    const carsRepository = getCustomRepository(CarsRepository);
 
-  constructor(carRepository: CarRepository) {
-    this.carRepository = carRepository;
-  }
-
-  public execute({ id, color, board, brand }: Request): Car {
-    const findCar = this.carRepository.findById(id);
+    const findCar = await carsRepository.findById(id);
 
     if (!findCar) {
       throw Error('Car not found.');
     }
 
-    const allCars = this.carRepository.all();
+    const allCars = await carsRepository.find();
 
     const findCarInSameBoard = allCars.find(car => car.board === board);
 
@@ -37,7 +35,7 @@ class UpdateCarService {
       brand: brand ? brand : findCar.brand,
     };
 
-    const car = this.carRepository.update(updateCar);
+    const car = await carsRepository.updateCar(updateCar);
 
     return car;
   }

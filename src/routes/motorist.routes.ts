@@ -1,13 +1,10 @@
 import { Router, Request, Response } from 'express';
-import { getCustomRepository } from 'typeorm';
 
 import CreateMotoristService from '../services/CreateMotoristService';
 import UpdateMotoristService from '../services/UpdateMotoristService';
 import DeleteMotoristService from '../services/DeleteMotoristService';
 import FindOneMotoristService from '../services/FindOneMotoristService';
 import FindMotoristsService from '../services/FindMotoristsService';
-
-import MotoristsRepository from '../repositories/MotoristsRepository';
 
 const motoristRouter = Router();
 

@@ -5,7 +5,7 @@ import Motorist from '../models/Motorist';
 @EntityRepository(Motorist)
 class MotoristRepository extends Repository<Motorist> {
   public async updateMotorist(motorist: Motorist): Promise<Motorist> {
-    return this.save(motorist);
+    return await this.save(motorist);
   }
 
   public async findById(id: string): Promise<Motorist | null> {
