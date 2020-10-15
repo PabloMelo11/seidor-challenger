@@ -13,7 +13,7 @@ class CreateReservationService {
   }
 
   public execute({ name }: Request): Motorist {
-    const findMotorist = this.motoristRepository.findById(name);
+    const findMotorist = this.motoristRepository.findByName(name);
 
     if (findMotorist) {
       throw Error('Motorist is already exists.');

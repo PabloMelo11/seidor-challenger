@@ -8,6 +8,6 @@ const routes = Router();
 
 routes.use('/reservations', reservationsRouter);
 routes.use('/cars', carsRouter);
-routes.use('/motorist', motoristRouter);
+routes.use('/motorists', motoristRouter);
 
 export default routes;

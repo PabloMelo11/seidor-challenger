@@ -16,7 +16,13 @@ class MotoristRepository {
     return this.motorists;
   }
 
-  public findById(name: string): Motorist | null {
+  public findById(id: string): Motorist | null {
+    const motorist = this.motorists.find(motorist => motorist.id === id);
+
+    return motorist || null;
+  }
+
+  public findByName(name: string): Motorist | null {
     const motorist = this.motorists.find(motorist => motorist.name === name);
 
     return motorist || null;
@@ -30,6 +36,20 @@ class MotoristRepository {
     this.motorists.push(motorist);
 
     return motorist;
+  }
+
+  public update(motorist: MotoristDTO): Motorist {
+    const findMotorist = this.motorists.findIndex(
+      motorist => motorist.id === motorist.id,
+    );
+
+    const updateMotorist = {
+      ...motorist,
+    };
+
+    this.motorists[findMotorist] = updateMotorist;
+
+    return updateMotorist;
   }
 }
 
