@@ -2,7 +2,7 @@ import Reservation from '../models/Reservation';
 
 interface CreateReservationDTO {
   id: string;
-  client: string;
+  motorist_id: string;
   initial_date: Date;
   finish_date: Date | null;
   car: string;
@@ -36,23 +36,25 @@ class ReservationsRepository {
     return findReservationByCar || null;
   }
 
-  public findReservationsByClient(client: string): Reservation[] | null {
-    const findReservationsByClient = this.reservations.filter(
-      reservation => reservation.client === client,
+  public findReservationsByMotoristId(
+    motorist_id: string,
+  ): Reservation[] | null {
+    const findReservationsByMotoristId = this.reservations.filter(
+      reservation => reservation.motorist_id === motorist_id,
     );
 
-    return findReservationsByClient || null;
+    return findReservationsByMotoristId || null;
   }
 
   public create({
-    client,
+    motorist_id,
     initial_date,
     finish_date,
     car,
     reason,
   }: Omit<CreateReservationDTO, 'id'>): Reservation {
     const reservation = new Reservation({
-      client,
+      motorist_id,
       initial_date,
       finish_date,
       car,

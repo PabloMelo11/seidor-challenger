@@ -1,8 +1,9 @@
 import Reservation from '../models/Reservation';
+
 import ReservationsRepository from '../repositories/ReservationsRepository';
 
 interface Request {
-  client: string;
+  motorist_id: string;
   initial_date: Date;
   finish_date: Date | null;
   car: string;
@@ -17,7 +18,7 @@ class CreateReservationService {
   }
 
   public execute({
-    client,
+    motorist_id,
     initial_date,
     finish_date,
     car,
@@ -35,20 +36,20 @@ class CreateReservationService {
       throw Error('This car is already being used.');
     }
 
-    const findReservationsByClient = this.reservationsRepository.findReservationsByClient(
-      client,
+    const findReservationsByMotoristId = this.reservationsRepository.findReservationsByMotoristId(
+      motorist_id,
     );
 
-    const busyClient = findReservationsByClient?.find(
+    const busyMotorist = findReservationsByMotoristId?.find(
       reservation => reservation.finish_date === null,
     );
 
-    if (busyClient) {
-      throw Error('This customer is already using a car.');
+    if (busyMotorist) {
+      throw Error('This motorist is already using a car.');
     }
 
     const reservation = this.reservationsRepository.create({
-      client,
+      motorist_id,
       initial_date,
       finish_date,
       car,

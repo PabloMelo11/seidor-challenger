@@ -18,7 +18,13 @@ reservationsRouter.get('/', (request: Request, response: Response) => {
 
 reservationsRouter.post('/', (request: Request, response: Response) => {
   try {
-    const { client, initial_date, finish_date, car, reason } = request.body;
+    const {
+      motorist_id,
+      initial_date,
+      finish_date,
+      car,
+      reason,
+    } = request.body;
 
     const parsedInitialDate = parseISO(initial_date);
     const parsedFinishDate = finish_date ? parseISO(finish_date) : null;
@@ -28,7 +34,7 @@ reservationsRouter.post('/', (request: Request, response: Response) => {
     );
 
     const reservation = createReservation.execute({
-      client,
+      motorist_id,
       initial_date: parsedInitialDate,
       finish_date: parsedFinishDate,
       car,

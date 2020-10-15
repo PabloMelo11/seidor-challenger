@@ -3,7 +3,7 @@ import { v4 } from 'uuid';
 class Reservation {
   id: string;
 
-  client: string;
+  motorist_id: string;
 
   initial_date: Date;
 
@@ -14,13 +14,13 @@ class Reservation {
   reason: string;
 
   constructor({
-    client,
+    motorist_id,
     initial_date,
     finish_date,
     car,
     reason,
   }: Omit<Reservation, 'id'>) {
-    (this.id = v4()), (this.client = client);
+    (this.id = v4()), (this.motorist_id = motorist_id);
     this.initial_date = initial_date;
     this.finish_date = finish_date;
     this.car = car;
