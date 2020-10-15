@@ -7,9 +7,13 @@ class Car {
 
   board: string;
 
-  constructor({ color, board }: Omit<Car, 'id'>) {
-    (this.id = v4()), (this.color = color);
+  brand: string;
+
+  constructor({ color, board, brand }: Omit<Car, 'id'>) {
+    this.id = v4();
+    this.color = color;
     this.board = board;
+    this.brand = brand;
   }
 }
 

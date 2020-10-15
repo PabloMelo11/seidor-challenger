@@ -3,6 +3,12 @@ import Car from '../models/Car';
 interface CreateCarDTO {
   color: string;
   board: string;
+  brand: string;
+}
+
+interface FindCarsByColorAndBrand {
+  color: string;
+  brand: string;
 }
 
 class CarsRepository {
@@ -22,10 +28,22 @@ class CarsRepository {
     return findCar || null;
   }
 
-  public create({ color, board }: CreateCarDTO): Car {
+  public findCarsByColorAndBrand({
+    color,
+    brand,
+  }: FindCarsByColorAndBrand): Car[] | null {
+    const cars = this.cars.filter(
+      car => (color && car.color === color) || (brand && car.brand === brand),
+    );
+
+    return cars || null;
+  }
+
+  public create({ color, board, brand }: CreateCarDTO): Car {
     const car = new Car({
       color,
       board,
+      brand,
     });
 
     this.cars.push(car);
