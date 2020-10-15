@@ -40,7 +40,13 @@ class CarsRepository {
     brand,
   }: FindCarsByColorAndBrand): Car[] | null {
     const cars = this.cars.filter(
-      car => (color && car.color === color) || (brand && car.brand === brand),
+      car =>
+        (color &&
+          car.color.toLocaleLowerCase().search(color.toLocaleLowerCase()) !==
+            -1) ||
+        (brand &&
+          car.brand.toLocaleLowerCase().search(brand.toLocaleLowerCase()) !==
+            -1),
     );
 
     return cars || null;

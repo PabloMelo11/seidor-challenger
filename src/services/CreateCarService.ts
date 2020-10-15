@@ -18,7 +18,7 @@ class CreateReservationService {
     const findCarByBoard = this.carRepository.findByBoard(board);
 
     if (findCarByBoard) {
-      throw Error('Car is already exists.');
+      throw Error('This car with board is already exists.');
     }
 
     const car = this.carRepository.create({
