@@ -1,25 +1,25 @@
 import Motorist from '../models/Motorist';
-import MotoristRepository from '../repositories/MotoristRepository';
+import MotoristsRepository from '../repositories/MotoristsRepository';
 
 interface Request {
   name: string;
 }
 
 class CreateReservationService {
-  private motoristRepository: MotoristRepository;
+  private motoristsRepository: MotoristsRepository;
 
-  constructor(motoristRepository: MotoristRepository) {
-    this.motoristRepository = motoristRepository;
+  constructor(motoristsRepository: MotoristsRepository) {
+    this.motoristsRepository = motoristsRepository;
   }
 
   public execute({ name }: Request): Motorist {
-    const findMotorist = this.motoristRepository.findByName(name);
+    const findMotorist = this.motoristsRepository.findByName(name);
 
     if (findMotorist) {
       throw Error('Motorist is already exists.');
     }
 
-    const car = this.motoristRepository.create({ name });
+    const car = this.motoristsRepository.create({ name });
 
     return car;
   }

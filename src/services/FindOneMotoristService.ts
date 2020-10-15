@@ -1,27 +1,26 @@
+import Motorist from '../models/Motorist';
 import MotoristsRepository from '../repositories/MotoristsRepository';
 
 interface Request {
   id: string;
 }
 
-class DeleteCarService {
+class FindOneCarService {
   private motoristsRepository: MotoristsRepository;
 
   constructor(motoristsRepository: MotoristsRepository) {
     this.motoristsRepository = motoristsRepository;
   }
 
-  public execute({ id }: Request) {
-    const findMotorist = this.motoristsRepository.findById(id);
+  public execute({ id }: Request): Motorist | null {
+    const motorist = this.motoristsRepository.findById(id);
 
-    if (!findMotorist) {
+    if (!motorist) {
       throw Error('Motorist not found.');
     }
 
-    this.motoristsRepository.delete(id);
-
-    return;
+    return motorist || null;
   }
 }
 
-export default DeleteCarService;
+export default FindOneCarService;

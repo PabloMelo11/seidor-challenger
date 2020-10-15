@@ -1,4 +1,3 @@
-import Car from '../models/Car';
 import CarRepository from '../repositories/CarsRepository';
 
 interface Request {

@@ -1,5 +1,5 @@
 import Motorist from '../models/Motorist';
-import MotoristRepository from '../repositories/MotoristRepository';
+import MotoristsRepository from '../repositories/MotoristsRepository';
 
 interface Request {
   id: string;
@@ -7,20 +7,20 @@ interface Request {
 }
 
 class UpdateMotoristService {
-  private motoristRepository: MotoristRepository;
+  private motoristsRepository: MotoristsRepository;
 
-  constructor(motoristRepository: MotoristRepository) {
-    this.motoristRepository = motoristRepository;
+  constructor(motoristsRepository: MotoristsRepository) {
+    this.motoristsRepository = motoristsRepository;
   }
 
   public execute({ id, name }: Request): Motorist {
-    const findMotorist = this.motoristRepository.findById(id);
+    const findMotorist = this.motoristsRepository.findById(id);
 
     if (!findMotorist) {
       throw Error('Motorist not found.');
     }
 
-    const allMotorists = this.motoristRepository.all();
+    const allMotorists = this.motoristsRepository.all();
 
     const findMotoristInSameName = allMotorists.find(
       motorist => motorist.name === name,
@@ -35,7 +35,7 @@ class UpdateMotoristService {
 
     findMotorist.name = name;
 
-    const car = this.motoristRepository.update(findMotorist);
+    const car = this.motoristsRepository.update(findMotorist);
 
     return car;
   }
