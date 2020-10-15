@@ -13,9 +13,9 @@ class DeleteCarService {
   }
 
   public execute({ id }: Request) {
-    const findCarByBoard = this.carRepository.findById(id);
+    const findCar = this.carRepository.findById(id);
 
-    if (!findCarByBoard) {
+    if (!findCar) {
       throw Error('Car not found.');
     }
 

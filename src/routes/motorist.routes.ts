@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 
 import CreateMotoristService from '../services/CreateMotoristService';
 import UpdateMotoristService from '../services/UpdateMotoristService';
+import DeleteMotoristService from '../services/DeleteMotoristService';
 import MotoristRepository from '../repositories/MotoristRepository';
 
 const motoristRouter = Router();
@@ -38,6 +39,20 @@ motoristRouter.put('/:id', (request: Request, response: Response) => {
     const motorist = updateMotorist.execute({ id, name });
 
     return response.json(motorist);
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
+  }
+});
+
+motoristRouter.delete('/:id', (request: Request, response: Response) => {
+  try {
+    const { id } = request.params;
+
+    const deleteMotorist = new DeleteMotoristService(motoristRepository);
+
+    deleteMotorist.execute({ id });
+
+    return response.status(200).send();
   } catch (err) {
     return response.status(400).json({ error: err.message });
   }

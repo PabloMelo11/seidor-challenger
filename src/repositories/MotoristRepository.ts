@@ -51,6 +51,16 @@ class MotoristRepository {
 
     return updateMotorist;
   }
+
+  public delete(id: string) {
+    const motoristIndex = this.motorists.findIndex(
+      motorist => motorist.id === id,
+    );
+
+    this.motorists.splice(motoristIndex, 1);
+
+    return;
+  }
 }
 
 export default MotoristRepository;
