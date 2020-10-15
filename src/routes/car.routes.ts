@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 
 import CreateCarService from '../services/CreateCarService';
 import FindCarService from '../services/FindCarService';
+import UpdateCarService from '../services/UpdateCarService';
 
 import CarsRepository from '../repositories/CarsRepository';
 
@@ -38,4 +39,18 @@ carsRouter.post('/', (request: Request, response: Response) => {
   }
 });
 
+carsRouter.put('/:id', (request: Request, response: Response) => {
+  try {
+    const { color, board, brand } = request.body;
+    const { id } = request.params;
+
+    const updateCar = new UpdateCarService(carsRepository);
+
+    const car = updateCar.execute({ id, color, board, brand });
+
+    return response.json(car);
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
+  }
+});
 export default carsRouter;

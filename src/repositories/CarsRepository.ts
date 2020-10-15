@@ -1,6 +1,7 @@
 import Car from '../models/Car';
 
-interface CreateCarDTO {
+interface CarDTO {
+  id: string;
   color: string;
   board: string;
   brand: string;
@@ -28,6 +29,12 @@ class CarsRepository {
     return findCar || null;
   }
 
+  public findById(id: string): Car | null {
+    const findCar = this.cars.find(car => car.id === id);
+
+    return findCar || null;
+  }
+
   public findCarsByColorAndBrand({
     color,
     brand,
@@ -39,7 +46,7 @@ class CarsRepository {
     return cars || null;
   }
 
-  public create({ color, board, brand }: CreateCarDTO): Car {
+  public create({ color, board, brand }: Omit<CarDTO, 'id'>): Car {
     const car = new Car({
       color,
       board,
@@ -49,6 +56,18 @@ class CarsRepository {
     this.cars.push(car);
 
     return car;
+  }
+
+  public update(car: CarDTO): Car {
+    const findCar = this.cars.findIndex(car => car.id === car.id);
+
+    const updateCar = {
+      ...car,
+    };
+
+    this.cars[findCar] = updateCar;
+
+    return updateCar;
   }
 }
 
