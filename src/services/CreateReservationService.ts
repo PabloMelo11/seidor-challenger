@@ -1,6 +1,7 @@
 import Reservation from '../models/Reservation';
 
 import ReservationsRepository from '../repositories/ReservationsRepository';
+import MotoristsRepository from '../repositories/MotoristsRepository';
 
 interface Request {
   motorist_id: string;
@@ -12,9 +13,11 @@ interface Request {
 
 class CreateReservationService {
   private reservationsRepository: ReservationsRepository;
+  private motoristsRepository: MotoristsRepository;
 
   constructor(reservationsRepository: ReservationsRepository) {
     this.reservationsRepository = reservationsRepository;
+    this.motoristsRepository = this.motoristsRepository;
   }
 
   public execute({

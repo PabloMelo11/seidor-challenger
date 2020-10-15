@@ -1,14 +1,13 @@
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { v4 } from 'uuid';
 
+@Entity()
 class Motorist {
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column()
   name: string;
-
-  constructor({ name }: Omit<Motorist, 'id'>) {
-    this.id = v4();
-    this.name = name;
-  }
 }
 
 export default Motorist;
