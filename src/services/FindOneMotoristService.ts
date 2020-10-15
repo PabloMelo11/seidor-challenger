@@ -1,3 +1,5 @@
+import { getCustomRepository } from 'typeorm';
+
 import Motorist from '../models/Motorist';
 import MotoristsRepository from '../repositories/MotoristsRepository';
 
@@ -6,14 +8,10 @@ interface Request {
 }
 
 class FindOneCarService {
-  private motoristsRepository: MotoristsRepository;
+  public async execute({ id }: Request): Promise<Motorist | null> {
+    const motoristsRepository = getCustomRepository(MotoristsRepository);
 
-  constructor(motoristsRepository: MotoristsRepository) {
-    this.motoristsRepository = motoristsRepository;
-  }
-
-  public execute({ id }: Request): Motorist | null {
-    const motorist = this.motoristsRepository.findById(id);
+    const motorist = await motoristsRepository.findById(id);
 
     if (!motorist) {
       throw Error('Motorist not found.');

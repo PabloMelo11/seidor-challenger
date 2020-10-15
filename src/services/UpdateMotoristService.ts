@@ -1,3 +1,5 @@
+import { getCustomRepository } from 'typeorm';
+
 import Motorist from '../models/Motorist';
 import MotoristsRepository from '../repositories/MotoristsRepository';
 
@@ -7,20 +9,16 @@ interface Request {
 }
 
 class UpdateMotoristService {
-  private motoristsRepository: MotoristsRepository;
+  public async execute({ id, name }: Request): Promise<Motorist> {
+    const motoristsRepository = getCustomRepository(MotoristsRepository);
 
-  constructor(motoristsRepository: MotoristsRepository) {
-    this.motoristsRepository = motoristsRepository;
-  }
-
-  public execute({ id, name }: Request): Motorist {
-    const findMotorist = this.motoristsRepository.findById(id);
+    const findMotorist = await motoristsRepository.findById(id);
 
     if (!findMotorist) {
       throw Error('Motorist not found.');
     }
 
-    const allMotorists = this.motoristsRepository.all();
+    const allMotorists = await motoristsRepository.find();
 
     const findMotoristInSameName = allMotorists.find(
       motorist => motorist.name === name,
@@ -35,7 +33,7 @@ class UpdateMotoristService {
 
     findMotorist.name = name;
 
-    const car = this.motoristsRepository.update(findMotorist);
+    const car = await motoristsRepository.updateMotorist(findMotorist);
 
     return car;
   }

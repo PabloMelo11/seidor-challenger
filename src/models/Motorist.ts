@@ -1,7 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { v4 } from 'uuid';
-
-@Entity()
+@Entity('motorists')
 class Motorist {
   @PrimaryGeneratedColumn('uuid')
   id: string;

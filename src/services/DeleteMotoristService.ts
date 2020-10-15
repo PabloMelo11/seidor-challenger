@@ -1,3 +1,4 @@
+import { getCustomRepository } from 'typeorm';
 import MotoristsRepository from '../repositories/MotoristsRepository';
 
 interface Request {
@@ -5,20 +6,16 @@ interface Request {
 }
 
 class DeleteCarService {
-  private motoristsRepository: MotoristsRepository;
+  public async execute({ id }: Request) {
+    const motoristsRepository = getCustomRepository(MotoristsRepository);
 
-  constructor(motoristsRepository: MotoristsRepository) {
-    this.motoristsRepository = motoristsRepository;
-  }
-
-  public execute({ id }: Request) {
-    const findMotorist = this.motoristsRepository.findById(id);
+    const findMotorist = motoristsRepository.findById(id);
 
     if (!findMotorist) {
       throw Error('Motorist not found.');
     }
 
-    this.motoristsRepository.delete(id);
+    motoristsRepository.delete(id);
 
     return;
   }

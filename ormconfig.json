@@ -5,6 +5,9 @@
   "username": "docker",
   "password": "docker",
   "database": "server",
+  "entities": [
+    "./src/models/*.ts"
+  ],
   "migrations": [
     "./src/database/migrations/*.ts"
   ],

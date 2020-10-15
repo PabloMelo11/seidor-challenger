@@ -1,75 +1,35 @@
+import { EntityRepository, Repository } from 'typeorm';
+
 import Motorist from '../models/Motorist';
 
-interface MotoristDTO {
-  id: string;
-  name: string;
-}
-
-class MotoristRepository {
-  private motorists: MotoristDTO[];
-
-  constructor() {
-    this.motorists = [];
+@EntityRepository(Motorist)
+class MotoristRepository extends Repository<Motorist> {
+  public async updateMotorist(motorist: Motorist): Promise<Motorist> {
+    return this.save(motorist);
   }
 
-  public all() {
-    return this.motorists;
-  }
-
-  public findById(id: string): Motorist | null {
-    const motorist = this.motorists.find(motorist => motorist.id === id);
-
-    return motorist || null;
-  }
-
-  public findMotoristsByName(name: string): Motorist[] | null {
-    const motorist = this.motorists.filter(
-      motorist =>
-        motorist.name.toLocaleLowerCase().search(name.toLocaleLowerCase()) !==
-        -1,
-    );
-
-    return motorist || null;
-  }
-
-  public findByName(name: string): Motorist | null {
-    const motorist = this.motorists.find(motorist => motorist.name === name);
-
-    return motorist || null;
-  }
-
-  public create({ name }: Omit<MotoristDTO, 'id'>): Motorist {
-    const motorist = new Motorist({
-      name,
+  public async findById(id: string): Promise<Motorist | null> {
+    const findMotorist = await this.findOne({
+      where: { id },
     });
 
-    this.motorists.push(motorist);
-
-    return motorist;
+    return findMotorist || null;
   }
 
-  public update(motorist: MotoristDTO): Motorist {
-    const findMotorist = this.motorists.findIndex(
-      motorist => motorist.id === motorist.id,
-    );
+  public async findMotoristsByName(name: string): Promise<Motorist[] | null> {
+    const findMotorists = await this.find({
+      where: { name },
+    });
 
-    const updateMotorist = {
-      ...motorist,
-    };
-
-    this.motorists[findMotorist] = updateMotorist;
-
-    return updateMotorist;
+    return findMotorists || null;
   }
 
-  public delete(id: string) {
-    const motoristIndex = this.motorists.findIndex(
-      motorist => motorist.id === id,
-    );
+  public async findByName(name: string): Promise<Motorist | undefined> {
+    const findMotorist = await this.findOne({
+      where: { name },
+    });
 
-    this.motorists.splice(motoristIndex, 1);
-
-    return;
+    return findMotorist || undefined;
   }
 }
 

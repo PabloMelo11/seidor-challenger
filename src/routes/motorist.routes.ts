@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+import { getCustomRepository } from 'typeorm';
 
 import CreateMotoristService from '../services/CreateMotoristService';
 import UpdateMotoristService from '../services/UpdateMotoristService';
@@ -6,19 +7,17 @@ import DeleteMotoristService from '../services/DeleteMotoristService';
 import FindOneMotoristService from '../services/FindOneMotoristService';
 import FindMotoristsService from '../services/FindMotoristsService';
 
-import MotoristRepository from '../repositories/MotoristsRepository';
+import MotoristsRepository from '../repositories/MotoristsRepository';
 
 const motoristRouter = Router();
 
-const motoristRepository = new MotoristRepository();
-
-motoristRouter.get('/', (request: Request, response: Response) => {
+motoristRouter.get('/', async (request: Request, response: Response) => {
   try {
     const name: string = request.query.name as string;
 
-    const findMotorists = new FindMotoristsService(motoristRepository);
+    const findMotorists = new FindMotoristsService();
 
-    const motorists = findMotorists.execute({ name });
+    const motorists = await findMotorists.execute({ name });
 
     return response.json(motorists);
   } catch (err) {
@@ -26,13 +25,13 @@ motoristRouter.get('/', (request: Request, response: Response) => {
   }
 });
 
-motoristRouter.get('/:id', (request: Request, response: Response) => {
+motoristRouter.get('/:id', async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
 
-    const findMotorist = new FindOneMotoristService(motoristRepository);
+    const findOneMotorist = new FindOneMotoristService();
 
-    const motorist = findMotorist.execute({ id });
+    const motorist = await findOneMotorist.execute({ id });
 
     return response.json(motorist);
   } catch (err) {
@@ -40,13 +39,13 @@ motoristRouter.get('/:id', (request: Request, response: Response) => {
   }
 });
 
-motoristRouter.post('/', (request: Request, response: Response) => {
+motoristRouter.post('/', async (request: Request, response: Response) => {
   try {
     const { name } = request.body;
 
-    const createMotorist = new CreateMotoristService(motoristRepository);
+    const createMotorist = new CreateMotoristService();
 
-    const motorist = createMotorist.execute({ name });
+    const motorist = await createMotorist.execute({ name });
 
     return response.json(motorist);
   } catch (err) {
@@ -54,14 +53,14 @@ motoristRouter.post('/', (request: Request, response: Response) => {
   }
 });
 
-motoristRouter.put('/:id', (request: Request, response: Response) => {
+motoristRouter.put('/:id', async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
     const { name } = request.body;
 
-    const updateMotorist = new UpdateMotoristService(motoristRepository);
+    const updateMotorist = new UpdateMotoristService();
 
-    const motorist = updateMotorist.execute({ id, name });
+    const motorist = await updateMotorist.execute({ id, name });
 
     return response.json(motorist);
   } catch (err) {
@@ -69,13 +68,13 @@ motoristRouter.put('/:id', (request: Request, response: Response) => {
   }
 });
 
-motoristRouter.delete('/:id', (request: Request, response: Response) => {
+motoristRouter.delete('/:id', async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
 
-    const deleteMotorist = new DeleteMotoristService(motoristRepository);
+    const deleteMotorist = new DeleteMotoristService();
 
-    deleteMotorist.execute({ id });
+    await deleteMotorist.execute({ id });
 
     return response.status(200).send();
   } catch (err) {

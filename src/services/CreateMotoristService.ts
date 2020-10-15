@@ -1,3 +1,5 @@
+import { getCustomRepository } from 'typeorm';
+
 import Motorist from '../models/Motorist';
 import MotoristsRepository from '../repositories/MotoristsRepository';
 
@@ -6,20 +8,18 @@ interface Request {
 }
 
 class CreateReservationService {
-  private motoristsRepository: MotoristsRepository;
+  public async execute({ name }: Request): Promise<Motorist> {
+    const motoristsRepository = getCustomRepository(MotoristsRepository);
 
-  constructor(motoristsRepository: MotoristsRepository) {
-    this.motoristsRepository = motoristsRepository;
-  }
-
-  public execute({ name }: Request): Motorist {
-    const findMotorist = this.motoristsRepository.findByName(name);
+    const findMotorist = await motoristsRepository.findByName(name);
 
     if (findMotorist) {
       throw Error('Motorist is already exists.');
     }
 
-    const car = this.motoristsRepository.create({ name });
+    const car = motoristsRepository.create({ name });
+
+    await motoristsRepository.save(car);
 
     return car;
   }
