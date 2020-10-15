@@ -1,7 +1,8 @@
 import { Router, Request, Response } from 'express';
 
 import CreateCarService from '../services/CreateCarService';
-import FindCarService from '../services/FindCarService';
+import FindCarService from '../services/FindCarsService';
+import FindOneCarService from '../services/FindOneCardService';
 import UpdateCarService from '../services/UpdateCarService';
 
 import CarsRepository from '../repositories/CarsRepository';
@@ -20,6 +21,20 @@ carsRouter.get('/', (request: Request, response: Response) => {
     const cars = findCars.execute({ color, brand });
 
     return response.json(cars);
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
+  }
+});
+
+carsRouter.get('/:id', (request: Request, response: Response) => {
+  try {
+    const { id } = request.params;
+
+    const findCar = new FindOneCarService(carsRepository);
+
+    const car = findCar.execute({ id });
+
+    return response.json(car);
   } catch (err) {
     return response.status(400).json({ error: err.message });
   }
