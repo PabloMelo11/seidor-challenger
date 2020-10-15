@@ -1,5 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { v4 } from 'uuid';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+} from 'typeorm';
 
 @Entity('cars')
 class Car {
@@ -14,6 +18,12 @@ class Car {
 
   @Column()
   brand: string;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @CreateDateColumn()
+  updated_at: Date;
 }
 
 export default Car;
