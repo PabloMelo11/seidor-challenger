@@ -7,7 +7,7 @@ import { errors } from 'celebrate';
 import routes from './shared/routes';
 import AppError from './shared/errors/AppError';
 
-import './database';
+import './shared/database';
 
 const app = express();
 

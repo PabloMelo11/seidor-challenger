@@ -1,8 +1,8 @@
 import { getCustomRepository } from 'typeorm';
 
-import AppError from '../errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 
-import Motorist from '../models/Motorist';
+import Motorist from '../entities/Motorist';
 import MotoristsRepository from '../repositories/MotoristsRepository';
 
 interface Request {
