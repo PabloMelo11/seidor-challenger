@@ -9,7 +9,7 @@ class DeleteCarService {
   public async execute({ id }: Request) {
     const motoristsRepository = getCustomRepository(MotoristsRepository);
 
-    const findMotorist = motoristsRepository.findById(id);
+    const findMotorist = await motoristsRepository.findById(id);
 
     if (!findMotorist) {
       throw Error('Motorist not found.');
