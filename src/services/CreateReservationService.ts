@@ -1,5 +1,7 @@
 import { getCustomRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
+
 import Reservation from '../models/Reservation';
 
 import ReservationsRepository from '../repositories/ReservationsRepository';
@@ -27,7 +29,7 @@ class CreateReservationService {
     const findMotorist = await motorsistsRepository.findById(motorist_id);
 
     if (!findMotorist) {
-      throw Error('Motorist not found.');
+      throw new AppError('Motorist not found.');
     }
 
     const findReservationsByCar = await reservationsRepository.findReservationsByCarId(
@@ -39,7 +41,7 @@ class CreateReservationService {
     );
 
     if (busyCar) {
-      throw Error('This car is already being used.');
+      throw new AppError('This car is already being used.');
     }
 
     const findReservationsByMotoristId = await reservationsRepository.findReservationsByMotoristId(
@@ -51,7 +53,7 @@ class CreateReservationService {
     );
 
     if (busyMotorist) {
-      throw Error('This motorist is already using a car.');
+      throw new AppError('This motorist is already using a car.');
     }
 
     const reservation = reservationsRepository.create({

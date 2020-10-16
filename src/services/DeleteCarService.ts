@@ -1,5 +1,7 @@
 import { getCustomRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
+
 import CarsRepository from '../repositories/CarsRepository';
 
 interface Request {
@@ -13,7 +15,7 @@ class DeleteCarService {
     const findCar = await carsRepository.findById(id);
 
     if (!findCar) {
-      throw Error('Car not found.');
+      throw new AppError('Car not found.');
     }
 
     await carsRepository.delete(id);

@@ -1,5 +1,7 @@
 import { getCustomRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
+
 import Motorist from '../models/Motorist';
 import MotoristsRepository from '../repositories/MotoristsRepository';
 
@@ -14,7 +16,7 @@ class FindOneCarService {
     const motorist = await motoristsRepository.findById(id);
 
     if (!motorist) {
-      throw Error('Motorist not found.');
+      throw new AppError('Motorist not found.');
     }
 
     return motorist || null;

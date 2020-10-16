@@ -1,5 +1,7 @@
 import { getCustomRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
+
 import Car from '../models/Car';
 import CarsRepository from '../repositories/CarsRepository';
 
@@ -17,7 +19,7 @@ class UpdateCarService {
     const findCar = await carsRepository.findById(id);
 
     if (!findCar) {
-      throw Error('Car not found.');
+      throw new AppError('Car not found.');
     }
 
     const allCars = await carsRepository.find();
@@ -25,7 +27,7 @@ class UpdateCarService {
     const findCarInSameBoard = allCars.find(car => car.board === board);
 
     if (findCarInSameBoard && findCarInSameBoard.board !== findCar.board) {
-      throw Error('This car already exists.');
+      throw new AppError('This car already exists.');
     }
 
     const updateCar = {

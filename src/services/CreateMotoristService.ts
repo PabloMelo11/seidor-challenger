@@ -1,5 +1,7 @@
 import { getCustomRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
+
 import Motorist from '../models/Motorist';
 import MotoristsRepository from '../repositories/MotoristsRepository';
 
@@ -14,7 +16,7 @@ class CreateReservationService {
     const findMotorist = await motoristsRepository.findByName(name);
 
     if (findMotorist) {
-      throw Error('Motorist is already exists.');
+      throw new AppError('Motorist is already exists.');
     }
 
     const car = motoristsRepository.create({ name });

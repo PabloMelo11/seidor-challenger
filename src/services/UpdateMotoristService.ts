@@ -1,5 +1,7 @@
 import { getCustomRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
+
 import Motorist from '../models/Motorist';
 import MotoristsRepository from '../repositories/MotoristsRepository';
 
@@ -15,7 +17,7 @@ class UpdateMotoristService {
     const findMotorist = await motoristsRepository.findById(id);
 
     if (!findMotorist) {
-      throw Error('Motorist not found.');
+      throw new AppError('Motorist not found.');
     }
 
     const allMotorists = await motoristsRepository.find();
@@ -28,7 +30,7 @@ class UpdateMotoristService {
       findMotoristInSameName &&
       findMotoristInSameName.name !== findMotorist.name
     ) {
-      throw Error('This motorist already exists.');
+      throw new AppError('This motorist already exists.');
     }
 
     findMotorist.name = name;

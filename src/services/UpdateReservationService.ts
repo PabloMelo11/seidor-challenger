@@ -1,5 +1,7 @@
 import { getCustomRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
+
 import Reservation from '../models/Reservation';
 import ReservationsRepository from '../repositories/ReservationsRepository';
 
@@ -20,7 +22,7 @@ class UpdateReservationService {
     );
 
     if (!findReservation) {
-      throw Error('Reservation not found.');
+      throw new AppError('Reservation not found.');
     }
 
     findReservation.finish_date = finish_date;
