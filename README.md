@@ -121,6 +121,11 @@ After running the migrations. Run the command to start the api
   yarn dev:server
 ```
 
+Run the following command to run the tests
+```sh
+  yarn test
+```
+
 ## 🌴 Routes
 
 **Motorists**
