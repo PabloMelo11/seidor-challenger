@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
 
-import MotoristsController from '../controllers/MotoristsController';
+import MotoristsController from '../../modules/motorists/controllers/MotoristsController';
 
 const motoristRouter = Router();
 const motoristsController = new MotoristsController();

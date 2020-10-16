@@ -1,11 +1,11 @@
 import { getCustomRepository } from 'typeorm';
 
-import AppError from '../errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 
-import Reservation from '../models/Reservation';
+import Reservation from '../entities/Reservation';
 
 import ReservationsRepository from '../repositories/ReservationsRepository';
-import MotoristsRepository from '../repositories/MotoristsRepository';
+import MotoristsRepository from '../../motorists/repositories/MotoristsRepository';
 
 interface Request {
   motorist_id: string;

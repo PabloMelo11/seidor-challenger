@@ -7,8 +7,8 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 
-import Motorist from './Motorist';
-import Car from './Car';
+import Motorist from '../../motorists/entities/Motorist';
+import Car from '../../cars/entities/Car';
 
 @Entity('reservations')
 class Reservation {

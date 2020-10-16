@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from 'typeorm';
-import Reservation from '../models/Reservation';
+import Reservation from '../entities/Reservation';
 
 interface CreateReservationDTO {
   id: string;

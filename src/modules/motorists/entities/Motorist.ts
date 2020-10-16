@@ -1,28 +1,22 @@
 import {
   Entity,
   Column,
+  OneToOne,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  OneToOne,
 } from 'typeorm';
 
-import Reservation from './Reservation';
+import Reservation from '../../reservations/entities/Reservation';
 
-@Entity('cars')
-class Car {
+@Entity('motorists')
+class Motorist {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  color: string;
+  name: string;
 
-  @Column()
-  board: string;
-
-  @Column()
-  brand: string;
-
-  @OneToOne(() => Reservation, reservation => reservation.car)
+  @OneToOne(() => Reservation, reservation => reservation.motorist)
   reservation: Reservation;
 
   @CreateDateColumn()
@@ -32,4 +26,4 @@ class Car {
   updated_at: Date;
 }
 
-export default Car;
+export default Motorist;

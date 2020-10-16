@@ -1,6 +1,6 @@
 import { EntityRepository, Repository, Like } from 'typeorm';
 
-import Car from '../models/Car';
+import Car from '../entities/Car';
 
 interface CarDTO {
   id: string;

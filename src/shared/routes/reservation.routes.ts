@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
 
-import ReservationsController from '../controllers/ReservationsController';
+import ReservationsController from '../../modules/reservations/controllers/ReservationsController';
 
 const reservationsRouter = Router();
 const reservationsController = new ReservationsController();

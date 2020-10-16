@@ -4,9 +4,9 @@ import { parseISO } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
 
 import CreateReservationService from '../services/CreateReservationService';
+import UpdateReservationService from '../services/UpdateReservationService';
 
 import ReservationsRepository from '../repositories/ReservationsRepository';
-import UpdateReservationService from '../services/UpdateReservationService';
 
 class ReservationsController {
   public async index(request: Request, response: Response): Promise<Response> {

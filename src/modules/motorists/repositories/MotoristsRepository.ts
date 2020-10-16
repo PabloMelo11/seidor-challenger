@@ -1,6 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
 
-import Motorist from '../models/Motorist';
+import Motorist from '../entities/Motorist';
 
 @EntityRepository(Motorist)
 class MotoristRepository extends Repository<Motorist> {

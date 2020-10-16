@@ -1,8 +1,8 @@
 import { getCustomRepository } from 'typeorm';
 
-import AppError from '../errors/AppError';
+import AppError from '../../../errors/AppError';
 
-import Car from '../models/Car';
+import Car from '../entities/Car';
 import CarRepository from '../repositories/CarsRepository';
 
 interface Request {

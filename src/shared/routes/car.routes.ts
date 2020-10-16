@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
 
-import CarsController from '../controllers/CarsController';
+import CarsController from '../../modules/cars/controllers/CarsController';
 
 const carsRouter = Router();
 const carsController = new CarsController();
