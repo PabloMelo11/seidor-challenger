@@ -42,10 +42,7 @@ class CarsRepository {
   public async create({ color, board, brand }: Car): Promise<Car> {
     const car = new Car();
 
-    car.id = uuid();
-    car.color = color;
-    car.board = board;
-    car.brand = brand;
+    Object.assign(car, { id: uuid(), color, board, brand });
 
     this.cars.push(car);
 

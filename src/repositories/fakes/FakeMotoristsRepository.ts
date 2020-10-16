@@ -44,8 +44,7 @@ class MotoristRepository {
   public async create({ name }: Motorist): Promise<Motorist> {
     const motorist = new Motorist();
 
-    motorist.id = uuid();
-    motorist.name = name;
+    Object.assign(motorist, { id: uuid(), name });
 
     this.motorists.push(motorist);
 

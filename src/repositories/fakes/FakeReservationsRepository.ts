@@ -57,11 +57,13 @@ class ReservationsRepository {
   }: Reservation): Promise<Reservation> {
     const reservation = new Reservation();
 
-    reservation.id = uuid();
-    reservation.motorist_id = motorist_id;
-    reservation.initial_date = initial_date;
-    reservation.car_id = car_id;
-    reservation.reason = reason;
+    Object.assign(reservation, {
+      id: uuid(),
+      motorist_id,
+      initial_date,
+      car_id,
+      reason,
+    });
 
     this.reservations.push(reservation);
 
