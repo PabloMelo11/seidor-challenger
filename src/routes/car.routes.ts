@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { celebrate, Segments, Joi } from 'celebrate';
 
 import CarsController from '../controllers/CarsController';
 
@@ -7,12 +8,51 @@ const carsController = new CarsController();
 
 carsRouter.get('/', carsController.index);
 
-carsRouter.get('/:id', carsController.show);
+carsRouter.get(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
+  carsController.show,
+);
 
-carsRouter.post('/', carsController.create);
+carsRouter.post(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      color: Joi.string().required(),
+      board: Joi.string().required(),
+      brand: Joi.string().required(),
+    },
+  }),
+  carsController.create,
+);
 
-carsRouter.put('/:id', carsController.update);
+carsRouter.put(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+    [Segments.BODY]: {
+      color: Joi.string(),
+      board: Joi.string(),
+      brand: Joi.string(),
+    },
+  }),
+  carsController.update,
+);
 
-carsRouter.delete('/:id', carsController.delete);
+carsRouter.delete(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
+  carsController.delete,
+);
 
 export default carsRouter;

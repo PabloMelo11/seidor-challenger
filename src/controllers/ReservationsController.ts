@@ -18,23 +18,15 @@ class ReservationsController {
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    const {
-      motorist_id,
-      initial_date,
-      finish_date,
-      car_id,
-      reason,
-    } = request.body;
+    const { motorist_id, initial_date, car_id, reason } = request.body;
 
     const parsedInitialDate = parseISO(initial_date);
-    const parsedFinishDate = finish_date ? parseISO(finish_date) : null;
 
     const createReservation = new CreateReservationService();
 
     const reservation = await createReservation.execute({
       motorist_id,
       initial_date: parsedInitialDate,
-      finish_date: parsedFinishDate,
       car_id,
       reason,
     });

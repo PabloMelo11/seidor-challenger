@@ -10,7 +10,6 @@ import MotoristsRepository from '../repositories/MotoristsRepository';
 interface Request {
   motorist_id: string;
   initial_date: Date;
-  finish_date: Date | null;
   car_id: string;
   reason: string;
 }
@@ -19,7 +18,6 @@ class CreateReservationService {
   public async execute({
     motorist_id,
     initial_date,
-    finish_date,
     car_id,
     reason,
   }: Request): Promise<Reservation> {
@@ -59,7 +57,6 @@ class CreateReservationService {
     const reservation = reservationsRepository.create({
       motorist_id,
       initial_date,
-      finish_date,
       car_id,
       reason,
     });
