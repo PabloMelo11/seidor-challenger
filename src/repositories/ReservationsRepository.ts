@@ -1,15 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
 import Reservation from '../models/Reservation';
 
-interface CreateReservationDTO {
-  id: string;
-  motorist_id: string;
-  initial_date: Date;
-  finish_date: Date | null;
-  car: string;
-  reason: string;
-}
-
 @EntityRepository(Reservation)
 class ReservationsRepository extends Repository<Reservation> {
   public async findReservationById(id: string): Promise<Reservation | null> {
