@@ -1,8 +1,7 @@
 import { uuid } from 'uuidv4';
 
-import Car from '../../models/Car';
-
-interface CreateCarDTO {
+interface Car {
+  id: string;
   color: string;
   board: string;
   brand: string;
@@ -40,9 +39,12 @@ class CarsRepository {
   }
 
   public async create({ color, board, brand }: Car): Promise<Car> {
-    const car = new Car();
-
-    Object.assign(car, { id: uuid(), color, board, brand });
+    const car = {
+      id: uuid(),
+      color,
+      board,
+      brand,
+    };
 
     this.cars.push(car);
 

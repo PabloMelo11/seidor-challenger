@@ -1,6 +1,9 @@
 import { uuid } from 'uuidv4';
 
-import Motorist from '../../models/Motorist';
+interface Motorist {
+  id: string;
+  name: string;
+}
 
 class MotoristRepository {
   private motorists: Motorist[] = [];
@@ -42,9 +45,10 @@ class MotoristRepository {
   }
 
   public async create({ name }: Motorist): Promise<Motorist> {
-    const motorist = new Motorist();
-
-    Object.assign(motorist, { id: uuid(), name });
+    const motorist = {
+      id: uuid(),
+      name,
+    };
 
     this.motorists.push(motorist);
 
