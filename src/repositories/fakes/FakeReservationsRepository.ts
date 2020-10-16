@@ -3,7 +3,7 @@ import Reservation from '../../models/Reservation';
 class ReservationsRepository {
   private reservations: Reservation[] = [];
 
-  public findReservationById(id: string): Reservation | null {
+  public async findReservationById(id: string): Promise<Reservation | null> {
     const findReservation = this.reservations.find(
       reservation => reservation.id === id,
     );
@@ -11,7 +11,9 @@ class ReservationsRepository {
     return findReservation || null;
   }
 
-  public findReservationsByCarId(car_id: string): Reservation[] | null {
+  public async findReservationsByCarId(
+    car_id: string,
+  ): Promise<Reservation[] | null> {
     const findReservation = this.reservations.filter(
       reservation => reservation.car_id === car_id,
     );
@@ -19,9 +21,9 @@ class ReservationsRepository {
     return findReservation || null;
   }
 
-  public findReservationsByMotoristId(
+  public async findReservationsByMotoristId(
     motorist_id: string,
-  ): Reservation[] | null {
+  ): Promise<Reservation[] | null> {
     const findReservation = this.reservations.filter(
       reservation => reservation.motorist_id === motorist_id,
     );
@@ -29,7 +31,9 @@ class ReservationsRepository {
     return findReservation || null;
   }
 
-  public updateReservation(reservation: Reservation): Reservation {
+  public async updateReservation(
+    reservation: Reservation,
+  ): Promise<Reservation> {
     const findReservation = this.reservations.findIndex(
       reservation => reservation.id === reservation.id,
     );
@@ -39,6 +43,24 @@ class ReservationsRepository {
     };
 
     this.reservations[findReservation] = updateReservation;
+
+    return reservation;
+  }
+
+  public async create({
+    motorist_id,
+    initial_date,
+    car_id,
+    reason,
+  }: Reservation): Promise<Reservation> {
+    const reservation = new Reservation();
+
+    reservation.motorist_id = motorist_id;
+    reservation.initial_date = initial_date;
+    reservation.car_id = car_id;
+    reservation.reason = reason;
+
+    this.reservations.push(reservation);
 
     return reservation;
   }
