@@ -1,3 +1,5 @@
+import { uuid } from 'uuidv4';
+
 import Motorist from '../../models/Motorist';
 
 class MotoristRepository {
@@ -42,6 +44,7 @@ class MotoristRepository {
   public async create({ name }: Motorist): Promise<Motorist> {
     const motorist = new Motorist();
 
+    motorist.id = uuid();
     motorist.name = name;
 
     this.motorists.push(motorist);
