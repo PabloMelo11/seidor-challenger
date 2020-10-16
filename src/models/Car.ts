@@ -3,7 +3,10 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  OneToOne,
 } from 'typeorm';
+
+import Reservation from './Reservation';
 
 @Entity('cars')
 class Car {
@@ -18,6 +21,9 @@ class Car {
 
   @Column()
   brand: string;
+
+  @OneToOne(() => Reservation, reservation => reservation.car)
+  reservation: Reservation;
 
   @CreateDateColumn()
   created_at: Date;

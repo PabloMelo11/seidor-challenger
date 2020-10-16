@@ -18,14 +18,14 @@ class Reservation {
   @Column()
   motorist_id: string;
 
-  @OneToOne(() => Motorist)
+  @OneToOne(() => Motorist, motorist => motorist.reservation, { eager: true })
   @JoinColumn({ name: 'motorist_id' })
   motorist: Motorist;
 
   @Column()
   car_id: string;
 
-  @OneToOne(() => Car)
+  @OneToOne(() => Car, car => car.reservation, { eager: true })
   @JoinColumn({ name: 'car_id' })
   car: Car;
 

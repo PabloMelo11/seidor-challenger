@@ -1,3 +1,5 @@
+import { getCustomRepository } from 'typeorm';
+
 import Reservation from '../models/Reservation';
 import ReservationsRepository from '../repositories/ReservationsRepository';
 
@@ -7,14 +9,13 @@ interface Request {
 }
 
 class UpdateReservationService {
-  private reservationsRepository: ReservationsRepository;
+  public async execute({
+    reservationId,
+    finish_date,
+  }: Request): Promise<Reservation> {
+    const reservationsRepository = getCustomRepository(ReservationsRepository);
 
-  constructor(reservationsRepository: ReservationsRepository) {
-    this.reservationsRepository = reservationsRepository;
-  }
-
-  public execute({ reservationId, finish_date }: Request) {
-    const findReservation = this.reservationsRepository.findReservationById(
+    const findReservation = await reservationsRepository.findReservationById(
       reservationId,
     );
 
@@ -24,7 +25,7 @@ class UpdateReservationService {
 
     findReservation.finish_date = finish_date;
 
-    const updatedReservation = this.reservationsRepository.update(
+    const updatedReservation = await reservationsRepository.updateReservation(
       findReservation,
     );
 

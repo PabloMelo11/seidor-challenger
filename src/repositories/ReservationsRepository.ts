@@ -1,3 +1,4 @@
+import { EntityRepository, Repository } from 'typeorm';
 import Reservation from '../models/Reservation';
 
 interface CreateReservationDTO {
@@ -9,75 +10,40 @@ interface CreateReservationDTO {
   reason: string;
 }
 
-class ReservationsRepository {
-  private reservations: Reservation[];
-
-  constructor() {
-    this.reservations = [];
-  }
-
-  public all(): Reservation[] {
-    return this.reservations;
-  }
-
-  public findReservationById(id: string): Reservation | null {
-    const findReservation = this.reservations.find(
-      reservation => reservation.id === id,
-    );
+@EntityRepository(Reservation)
+class ReservationsRepository extends Repository<Reservation> {
+  public async findReservationById(id: string): Promise<Reservation | null> {
+    const findReservation = await this.findOne({
+      where: { id },
+    });
 
     return findReservation || null;
   }
 
-  public findReservationByCar(car: string): Reservation[] | null {
-    const findReservationByCar = this.reservations.filter(
-      reservation => reservation.car === car,
-    );
+  public async findReservationsByCarId(
+    car_id: string,
+  ): Promise<Reservation[] | null> {
+    const findReservationByCarId = await this.find({
+      where: { car_id },
+    });
 
-    return findReservationByCar || null;
+    return findReservationByCarId || null;
   }
 
-  public findReservationsByMotoristId(
+  public async findReservationsByMotoristId(
     motorist_id: string,
-  ): Reservation[] | null {
-    const findReservationsByMotoristId = this.reservations.filter(
-      reservation => reservation.motorist_id === motorist_id,
-    );
+  ): Promise<Reservation[] | null> {
+    const findReservationsByMotoristId = await this.find({
+      where: { motorist_id },
+    });
 
     return findReservationsByMotoristId || null;
   }
 
-  public create({
-    motorist_id,
-    initial_date,
-    finish_date,
-    car,
-    reason,
-  }: Omit<CreateReservationDTO, 'id'>): Reservation {
-    const reservation = new Reservation({
-      motorist_id,
-      initial_date,
-      finish_date,
-      car,
-      reason,
-    });
-
-    this.reservations.push(reservation);
-
-    return reservation;
-  }
-
-  public update(reservation: CreateReservationDTO) {
-    const findReservation = this.reservations.findIndex(
-      reservation => reservation.id === reservation.id,
-    );
-
-    const updatedReservation = {
-      ...reservation,
-    };
-
-    this.reservations[findReservation] = updatedReservation;
-
-    return updatedReservation;
+  public async updateReservation(
+    reservation: Reservation,
+  ): Promise<Reservation> {
+    return await this.save(reservation);
   }
 }
 

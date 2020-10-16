@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { parseISO } from 'date-fns';
+import { getCustomRepository } from 'typeorm';
 
 import ReservationsRepository from '../repositories/ReservationsRepository';
 
@@ -8,36 +9,34 @@ import UpdateReservationService from '../services/UpdateReservationService';
 
 const reservationsRouter = Router();
 
-const reservationsRepository = new ReservationsRepository();
+reservationsRouter.get('/', async (request: Request, response: Response) => {
+  const reservationsRepository = getCustomRepository(ReservationsRepository);
 
-reservationsRouter.get('/', (request: Request, response: Response) => {
-  const reservations = reservationsRepository.all();
+  const reservations = await reservationsRepository.find();
 
   return response.json(reservations);
 });
 
-reservationsRouter.post('/', (request: Request, response: Response) => {
+reservationsRouter.post('/', async (request: Request, response: Response) => {
   try {
     const {
       motorist_id,
       initial_date,
       finish_date,
-      car,
+      car_id,
       reason,
     } = request.body;
 
     const parsedInitialDate = parseISO(initial_date);
     const parsedFinishDate = finish_date ? parseISO(finish_date) : null;
 
-    const createReservation = new CreateReservationService(
-      reservationsRepository,
-    );
+    const createReservation = new CreateReservationService();
 
-    const reservation = createReservation.execute({
+    const reservation = await createReservation.execute({
       motorist_id,
       initial_date: parsedInitialDate,
       finish_date: parsedFinishDate,
-      car,
+      car_id,
       reason,
     });
 
@@ -49,18 +48,16 @@ reservationsRouter.post('/', (request: Request, response: Response) => {
 
 reservationsRouter.patch(
   '/:reservationId',
-  (request: Request, response: Response) => {
+  async (request: Request, response: Response) => {
     try {
       const { reservationId } = request.params;
       const { finish_date } = request.body;
 
-      const updateReservation = new UpdateReservationService(
-        reservationsRepository,
-      );
+      const updateReservation = new UpdateReservationService();
 
       const parsedFinishDate = parseISO(finish_date);
 
-      const reservation = updateReservation.execute({
+      const reservation = await updateReservation.execute({
         reservationId,
         finish_date: parsedFinishDate,
       });

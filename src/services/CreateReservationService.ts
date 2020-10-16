@@ -1,3 +1,5 @@
+import { getCustomRepository } from 'typeorm';
+
 import Reservation from '../models/Reservation';
 
 import ReservationsRepository from '../repositories/ReservationsRepository';
@@ -7,28 +9,22 @@ interface Request {
   motorist_id: string;
   initial_date: Date;
   finish_date: Date | null;
-  car: string;
+  car_id: string;
   reason: string;
 }
 
 class CreateReservationService {
-  private reservationsRepository: ReservationsRepository;
-  private motoristsRepository: MotoristsRepository;
-
-  constructor(reservationsRepository: ReservationsRepository) {
-    this.reservationsRepository = reservationsRepository;
-    this.motoristsRepository = this.motoristsRepository;
-  }
-
-  public execute({
+  public async execute({
     motorist_id,
     initial_date,
     finish_date,
-    car,
+    car_id,
     reason,
-  }: Request): Reservation {
-    const findReservationsByCar = this.reservationsRepository.findReservationByCar(
-      car,
+  }: Request): Promise<Reservation> {
+    const reservationsRepository = getCustomRepository(ReservationsRepository);
+
+    const findReservationsByCar = await reservationsRepository.findReservationsByCarId(
+      car_id,
     );
 
     const busyCar = findReservationsByCar?.find(
@@ -39,7 +35,7 @@ class CreateReservationService {
       throw Error('This car is already being used.');
     }
 
-    const findReservationsByMotoristId = this.reservationsRepository.findReservationsByMotoristId(
+    const findReservationsByMotoristId = await reservationsRepository.findReservationsByMotoristId(
       motorist_id,
     );
 
@@ -51,13 +47,15 @@ class CreateReservationService {
       throw Error('This motorist is already using a car.');
     }
 
-    const reservation = this.reservationsRepository.create({
+    const reservation = reservationsRepository.create({
       motorist_id,
       initial_date,
       finish_date,
-      car,
+      car_id,
       reason,
     });
+
+    await reservationsRepository.save(reservation);
 
     return reservation;
   }
