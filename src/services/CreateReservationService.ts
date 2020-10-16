@@ -22,6 +22,13 @@ class CreateReservationService {
     reason,
   }: Request): Promise<Reservation> {
     const reservationsRepository = getCustomRepository(ReservationsRepository);
+    const motorsistsRepository = getCustomRepository(MotoristsRepository);
+
+    const findMotorist = await motorsistsRepository.findById(motorist_id);
+
+    if (!findMotorist) {
+      throw Error('Motorist not found.');
+    }
 
     const findReservationsByCar = await reservationsRepository.findReservationsByCarId(
       car_id,
