@@ -1,6 +1,13 @@
 import { uuid } from 'uuidv4';
 
-import Reservation from '../../models/Reservation';
+interface Reservation {
+  id: string;
+  motorist_id: string;
+  initial_date: Date;
+  finish_date?: Date;
+  car_id: string;
+  reason: string;
+}
 
 class ReservationsRepository {
   private reservations: Reservation[] = [];
@@ -55,15 +62,13 @@ class ReservationsRepository {
     car_id,
     reason,
   }: Reservation): Promise<Reservation> {
-    const reservation = new Reservation();
-
-    Object.assign(reservation, {
+    const reservation = {
       id: uuid(),
       motorist_id,
       initial_date,
       car_id,
       reason,
-    });
+    };
 
     this.reservations.push(reservation);
 
