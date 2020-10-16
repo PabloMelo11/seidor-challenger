@@ -11,12 +11,12 @@ reservationsRouter.get('/', reservationsController.index);
 reservationsRouter.post(
   '/',
   celebrate({
-    [Segments.BODY]: {
+    [Segments.BODY]: Joi.object().keys({
       motorist_id: Joi.string().uuid().required(),
       initial_date: Joi.date().required(),
       car_id: Joi.string().uuid().required(),
       reason: Joi.string().required(),
-    },
+    }),
   }),
   reservationsController.create,
 );

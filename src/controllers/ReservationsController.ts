@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { parseISO } from 'date-fns';
 
 import { getCustomRepository } from 'typeorm';
 
@@ -20,13 +19,11 @@ class ReservationsController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { motorist_id, initial_date, car_id, reason } = request.body;
 
-    const parsedInitialDate = parseISO(initial_date);
-
     const createReservation = new CreateReservationService();
 
     const reservation = await createReservation.execute({
       motorist_id,
-      initial_date: parsedInitialDate,
+      initial_date,
       car_id,
       reason,
     });
@@ -40,11 +37,9 @@ class ReservationsController {
 
     const updateReservation = new UpdateReservationService();
 
-    const parsedFinishDate = parseISO(finish_date);
-
     const reservation = await updateReservation.execute({
       reservationId,
-      finish_date: parsedFinishDate,
+      finish_date,
     });
 
     return response.json(reservation);
